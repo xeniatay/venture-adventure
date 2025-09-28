@@ -190,6 +190,9 @@ function renderAllocationCards() {
     const sliderWrap = document.createElement("div");
     sliderWrap.className = "slider";
 
+    const sliderRow = document.createElement("div");
+    sliderRow.className = "slider-row";
+
     const slider = document.createElement("input");
     slider.type = "range";
     slider.min = 0;
@@ -199,6 +202,18 @@ function renderAllocationCards() {
     slider.dataset.assetId = asset.id;
     slider.setAttribute("aria-label", `${asset.name} allocation percentage`);
 
+    const preciseInput = document.createElement("input");
+    preciseInput.type = "number";
+    preciseInput.min = 0;
+    preciseInput.max = 100;
+    preciseInput.step = 1;
+    preciseInput.value = slider.value;
+    preciseInput.dataset.assetId = asset.id;
+    preciseInput.setAttribute("aria-label", `${asset.name} allocation percentage (text entry)`);
+
+    sliderRow.appendChild(slider);
+    sliderRow.appendChild(preciseInput);
+
     const sliderInfo = document.createElement("div");
     sliderInfo.className = "range-info";
     const weightEl = document.createElement("span");
@@ -206,7 +221,7 @@ function renderAllocationCards() {
     weightEl.textContent = `${slider.value}%`;
     sliderInfo.appendChild(weightEl);
     const hintEl = document.createElement("span");
-    hintEl.textContent = "Adjust weight";
+    hintEl.textContent = "Adjust weight or enter exact %";
     sliderInfo.appendChild(hintEl);
 
     slider.addEventListener("input", (event) => {
@@ -214,10 +229,36 @@ function renderAllocationCards() {
       const id = event.target.dataset.assetId;
       allocationState[id] = value;
       weightEl.textContent = `${value}%`;
+      preciseInput.value = value;
       updateTotals();
     });
 
-    sliderWrap.appendChild(slider);
+    preciseInput.addEventListener("input", (event) => {
+      const id = event.target.dataset.assetId;
+      const raw = event.target.value;
+      if (raw === "") {
+        return;
+      }
+      let value = Number(raw);
+      if (!Number.isFinite(value)) {
+        return;
+      }
+      value = Math.max(0, Math.min(100, Math.round(value)));
+      event.target.value = value;
+      allocationState[id] = value;
+      slider.value = value;
+      weightEl.textContent = `${value}%`;
+      updateTotals();
+    });
+
+    preciseInput.addEventListener("blur", (event) => {
+      if (event.target.value === "") {
+        const fallback = allocationState[event.target.dataset.assetId] || 0;
+        event.target.value = fallback;
+      }
+    });
+
+    sliderWrap.appendChild(sliderRow);
     sliderWrap.appendChild(sliderInfo);
 
     const infoBox = document.createElement("div");
@@ -614,9 +655,14 @@ function updateSlider(assetId, value, disable) {
     return;
   }
   const slider = card.querySelector("input[type='range']");
+  const preciseInput = card.querySelector("input[type='number']");
   const weightEl = card.querySelector(".weight");
   slider.value = value;
   slider.disabled = disable;
+  if (preciseInput) {
+    preciseInput.value = value;
+    preciseInput.disabled = disable;
+  }
   weightEl.textContent = `${value}%`;
 }
 
