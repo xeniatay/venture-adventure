@@ -462,14 +462,22 @@ function drawChart(timeline, benchmarks) {
     ctx.stroke();
   });
 
-  const legendX = width - padding.right + 8;
+  ctx.font = "12px Inter, system-ui";
+  const legendBoxSize = 12;
+  const legendGap = 8;
+  const legendPadding = 12;
+  const longestLabel = series.reduce((longest, set) => {
+    const widthMeasure = ctx.measureText(set.label).width;
+    return Math.max(longest, widthMeasure);
+  }, 0);
+  const legendX = width - padding.right - longestLabel - legendBoxSize - legendPadding;
   let legendY = padding.top;
   series.forEach((set) => {
     ctx.fillStyle = set.color;
-    ctx.fillRect(legendX, legendY, 12, 12);
+    ctx.fillRect(legendX, legendY, legendBoxSize, legendBoxSize);
     ctx.fillStyle = "#243b53";
-    ctx.fillText(set.label, legendX + 18, legendY + 11);
-    legendY += 18;
+    ctx.fillText(set.label, legendX + legendBoxSize + legendGap, legendY + legendBoxSize - 1);
+    legendY += legendBoxSize + 6;
   });
 }
 
