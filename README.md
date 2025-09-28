@@ -155,3 +155,45 @@ Teach users how different asset classes perform over time, highlight venture’s
 ---
 
 Do you want me to make a **clickable wireframe mockup** of the core game flow (allocation → simulation → results) so you can visualize it, or would you prefer I write out a **detailed data model and system architecture** first?
+
+---
+
+## 🚀 MVP Implementation (Local Prototype)
+
+The repository now includes a self-contained HTML prototype that delivers the core gameplay loop.
+
+### How to Run
+
+1. Open `index.html` in any modern browser (Chrome, Edge, Firefox, Safari).
+2. Adjust the allocation sliders until the total reaches 100%.
+3. Click **Run 10-Year Simulation** to see the timeline, breakdown, and leaderboard update.
+
+> Tip: toggle **Retail access mode** to understand how real-world constraints change portfolio construction.
+
+### Implemented Features
+
+- Portfolio allocation UI with sliders, education callouts, and retail-access toggle.
+- Historical backtest engine using illustrative 2015–2025 return multipliers per asset class.
+- Results screen with final value, CAGR, percentile ranking, asset breakdown, and benchmark comparisons.
+- Canvas-based growth chart overlaying your portfolio versus equal-weight, public-only, and top-decile venture scenarios.
+- Local leaderboard (stored via `localStorage`) to compare past runs on the same device.
+- Optional CSV importer so you can swap in real return series without touching the code.
+
+### Data Notes
+
+- Return multipliers are illustrative proxies blended from public sources and rounded for teaching clarity.
+- Venture capital classes include both median and top-decile assumptions to highlight dispersion.
+- Cash track approximates risk-free yields over the period and shows inflation drag relative to risky assets.
+
+### Bring Your Own Dataset
+
+- Upload a CSV via **Historical Returns Dataset → Select CSV** in the UI (`index.html`) to override the default figures.
+- Required columns: `assetId, year, return` (case-insensitive). Years should cover 2015–2025 for best results.
+- Return values may be decimals (`0.12`) or percentages (`12` / `12%`); the simulator auto-normalizes.
+- Example file: `data/sample-asset-returns.csv` mirrors the built-in dataset and shows the expected shape.
+
+### Next Ideas
+
+- Swap illustrative returns for authenticated data feeds or CSV inputs.
+- Layer in market shock scenarios (COVID dip, 2022 drawdown) and alternative timelines.
+- Add a lightweight backend to persist leaderboards, user profiles, and classroom groups.

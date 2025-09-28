@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venture Adventure – Asset Class Simulator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="intro">
+      <h1>Venture Adventure</h1>
+      <p>Allocate $100K across asset classes, replay 2015–2025, and see how your strategy stacks up.</p>
+    </div>
+    <div class="meta">
+      <label class="toggle">
+        <input type="checkbox" id="retailToggle">
+        <span class="label">Retail access mode</span>
+      </label>
+      <div class="explain">Retail mode limits access to private equity and venture funds to show real-world constraints.</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" id="allocationPanel">
+      <h2>1. Build Your Portfolio</h2>
+      <section class="dataset-import" aria-label="Historical data controls">
+        <div class="import-head">
+          <h3>Historical Returns Dataset</h3>
+          <p>Upload a CSV with columns <code>assetId,year,return</code> to replace the built-in 2015–2025 series.</p>
+        </div>
+        <div class="import-controls">
+          <label class="file-input">
+            <span>Select CSV</span>
+            <input type="file" id="datasetInput" accept=".csv">
+          </label>
+          <button type="button" class="secondary" id="resetDatasetBtn" disabled>Reset to defaults</button>
+        </div>
+        <div class="dataset-status" id="datasetStatus" role="status">Using illustrative default dataset.</div>
+      </section>
+      <div id="allocationList" class="allocation-list"></div>
+      <div class="summary">
+        <div>Total allocation: <span id="totalAllocation">0%</span></div>
+        <div class="warning" id="allocationWarning">Total must equal 100%.</div>
+      </div>
+      <div class="actions">
+        <label class="name-entry">
+          Player name
+          <input type="text" id="playerName" maxlength="24" placeholder="Optional">
+        </label>
+        <button id="simulateBtn" disabled>Run 10-Year Simulation</button>
+      </div>
+    </section>
+
+    <section class="panel hidden" id="resultsPanel">
+      <h2>2. Results & Insights</h2>
+      <div class="results-grid">
+        <div class="card key-stats">
+          <h3>Your Portfolio</h3>
+          <div class="stat">
+            <div class="label">Final value</div>
+            <div class="value" id="finalValue">$0</div>
+          </div>
+          <div class="stat">
+            <div class="label">CAGR</div>
+            <div class="value" id="cagrValue">0%</div>
+          </div>
+          <div class="stat">
+            <div class="label">Percentile vs. leaderboard</div>
+            <div class="value" id="percentileValue">–</div>
+          </div>
+        </div>
+        <div class="card timeline">
+          <h3>Portfolio Growth (2015–2025)</h3>
+          <canvas id="growthChart" width="640" height="320"></canvas>
+        </div>
+        <div class="card breakdown">
+          <h3>Asset Class Breakdown</h3>
+          <div id="breakdownList"></div>
+        </div>
+        <div class="card comparisons">
+          <h3>Benchmarks</h3>
+          <div id="comparisonList" class="comparison-list"></div>
+        </div>
+      </div>
+      <button class="secondary" id="tryAgainBtn">Adjust Allocation</button>
+    </section>
+
+    <section class="panel" id="leaderboardPanel">
+      <h2>3. Leaderboard</h2>
+      <p>Top portfolios saved locally on this device. Create a new allocation to climb the ranks.</p>
+      <ol id="leaderboardList" class="leaderboard"></ol>
+    </section>
+  </main>
+
+  <footer>
+    <p>Historical return multipliers are illustrative and derived from public market proxies for educational use.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
