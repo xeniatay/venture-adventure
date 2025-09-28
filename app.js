@@ -299,12 +299,12 @@ function buildBenchmarks() {
       color: palette.publicOnly,
       ...simulateCustom({ publicMarkets: 1 })
     },
-    {
-      id: "ventureTop",
-      label: "100% VC Top-Decile",
-      color: palette.ventureTop,
-      ...simulateCustom({ vcTopDecile: 1 })
-    }
+    // {
+    //   id: "ventureTop",
+    //   label: "100% VC Top-Decile",
+    //   color: palette.ventureTop,
+    //   ...simulateCustom({ vcTopDecile: 1 })
+    // }
   ];
 
   return dataSets;
