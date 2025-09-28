@@ -801,8 +801,28 @@ button:focus-visible {
 
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-areas:
+    "stats breakdown comparison"
+    "timeline timeline timeline";
   gap: 1.8rem;
+  align-items: stretch;
+}
+
+.results-grid .key-stats {
+  grid-area: stats;
+}
+
+.results-grid .breakdown {
+  grid-area: breakdown;
+}
+
+.results-grid .comparisons {
+  grid-area: comparison;
+}
+
+.results-grid .timeline {
+  grid-area: timeline;
 }
 
 .timeline canvas {
@@ -957,6 +977,13 @@ footer .icon {
   .meta {
     max-width: 100%;
   }
+  .results-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "stats breakdown"
+      "comparison comparison"
+      "timeline timeline";
+  }
 }
 
 @media (max-width: 680px) {
@@ -1003,6 +1030,11 @@ footer .icon {
 
   .results-grid {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "stats"
+      "breakdown"
+      "comparison"
+      "timeline";
   }
 
   #growthChart {
