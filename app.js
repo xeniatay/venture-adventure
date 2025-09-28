@@ -557,9 +557,26 @@ function updateLeaderboardDisplay() {
       .map(([id, weight]) => `${lookupAssetName(id)} ${weight}%`)
       .join(", ");
 
-    item.innerHTML = `
-      <strong>${rank}. ${entry.name}</strong> — ${formatCurrency(entry.finalValue)} · ${formatPercent(entry.cagr)} · ${summary} (${date.toLocaleDateString()})
-    `;
+    const header = document.createElement("div");
+    header.className = "leaderboard-header";
+
+    const nameEl = document.createElement("strong");
+    nameEl.textContent = `${rank}. ${entry.name}`;
+
+    const valueEl = document.createElement("span");
+    valueEl.className = "leaderboard-value";
+    valueEl.textContent = `${formatCurrency(entry.finalValue)} · ${formatPercent(entry.cagr)} CAGR · ${date.toLocaleDateString()}`;
+
+    header.appendChild(nameEl);
+    header.appendChild(valueEl);
+
+    const allocationEl = document.createElement("div");
+    allocationEl.className = "leaderboard-allocation";
+    allocationEl.textContent = summary || "No allocation recorded.";
+
+    item.appendChild(header);
+    item.appendChild(allocationEl);
+
     leaderboardListEl.appendChild(item);
   });
 }
